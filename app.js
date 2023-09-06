@@ -15,3 +15,26 @@ console.log(firebase)
 // Initialize Firebase Authentication and get a reference to the service
 const auth = firebase.auth();
 console.log(auth)
+
+class App {
+  constructor() {
+
+    this.$app = document.querySelector("#app")
+    this.$firebaseContainer = document.querySelector("#firebaseui-auth-container")
+    this.$app.style.display = "none"
+
+    this.ui = new firebaseui.auth.AuthUI(auth);
+    this.handleAuth()
+  }
+
+  handleAuth() {
+    this.ui.start('#firebaseui-auth-container', {
+      signInOptions: [
+        firebase.auth.EmailAuthProvider.PROVIDER_ID
+      ],
+      // Other config options...
+    });
+  }
+}
+
+const appl = new App()
