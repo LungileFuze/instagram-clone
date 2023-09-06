@@ -8,6 +8,10 @@
     --color-border: #dbdbdb;
 }
 
+#app {
+    display: none;
+}
+
 .main-container {
     height: 100vh;
     margin: 0;
@@ -78,7 +82,20 @@
     width: 22px;
     border-radius: 50%;
 }
+ #auth-user {
+    margin: 0 5px 60px 5px;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 500; 
+}
 
+.logout {
+    border: none;
+    background-color: white;
+    margin-left: 20px;
+    cursor: pointer;
+}
 .navbar-icons-inner {
     padding: 0 0 0 24px;
     display: flex;

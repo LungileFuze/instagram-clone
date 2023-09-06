@@ -21,19 +21,59 @@ class App {
 
     this.$app = document.querySelector("#app")
     this.$firebaseContainer = document.querySelector("#firebaseui-auth-container")
-    this.$app.style.display = "none"
+    this.$authUserText = document.querySelector("#auth-user")
+    this.$logoutButton = document.querySelector(".logout")
 
     this.ui = new firebaseui.auth.AuthUI(auth);
     this.handleAuth()
+    this.addEventListeners()
   }
 
   handleAuth() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.redirectToApp()
+        console.log(user)
+        this.$authUserText.innerHTML = user.displayName
+        // var uid = user.uid;
+        // ...
+      } else {
+        this.redirectToAuth()
+      }
+    });
+  }
+
+  handleLogout() {
+    firebase.auth().signOut().then(() => {
+      // Sign-out successful.
+      this.redirectToAuth
+    }).catch((error) => {
+      // An error happened.
+      console.log("ERROR OCCURED", error)
+    });
+  }
+
+  redirectToApp() {
+    this.$firebaseContainer.style.display = "none"
+    this.$app.style.display = "block"
+  }
+
+  redirectToAuth() {
+    this.$firebaseContainer.style.display = "block"
+    this.$app.style.display = "none"
+
     this.ui.start('#firebaseui-auth-container', {
       signInOptions: [
         firebase.auth.EmailAuthProvider.PROVIDER_ID
       ],
       // Other config options...
     });
+  }
+
+  addEventListeners() {
+      this.$logoutButton.addEventListener("click", (event) => {
+        this.handleLogout()
+      })
   }
 }
 
