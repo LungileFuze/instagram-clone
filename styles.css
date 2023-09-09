@@ -1,3 +1,5 @@
+@import url(https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css);
+
 * {
     margin:0;
     padding:0;
@@ -16,82 +18,75 @@
     height: 100vh;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
-.navbar {
-    height: 54px;
-    border-bottom: 1px solid var(--color-border);
+  .side-bar {
+    flex: 1;
+    position:fixed;
+    height: 100vh;
+    width: 260px;
+    top: 0;
+    left: 0;
+    border-right: 1px solid #eff3f4;
+    font-size: 15px;
+    color: #0f1419;
+    z-index: 1000;
+
+  }
+
+  .side-bar .nav-bar {
     display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.navbar-inner {
-    width: 975px;
-    height: 100%;
-    display: flex;
-    padding: 0px 20px; 
-    align-items: center;
-}
-
-.logo {
-    width: 360px;
-}
-
-.search-bar {
-    background-color: #fafafa;
-    width: 215px;
-    height: 28px;
+    flex-direction: column;
+    margin: 10px 8px 0 8px;
 
 }
 
-.search-bar-inner {
-    background-color: #fafafa;
-    border-radius: 3px;
-    padding: 2px;
-    border: 1px solid var(--color-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.nav-bar .logo {
+    padding: 25px 12px 16px 12px;
+    margin-bottom: 16px;
 }
 
-.search-icon {
-    display: inline-block;
-    background-image: url(https://www.instagram.com/static/bundles/es6/sprite_core_2x_bcd90c1d4868.png/bcd90c1d4868.png);
-    background-repeat: no-repeat;
-    background-size: 440px 411px;
-    background-position: -428px -241px;
-    height: 10px;
-    width: 10px;
-    margin-right: 6px;
+
+.side-bar .nav-bar .nav-items {
+    font-weight: 400;
 }
 
-.search-text {
-    font-size: 14px;
-    font-weight: 300;
-    color: rgb(219, 219, 219);
+.nav-item {
+    padding: 12px;
+    margin: 2px ;
+    line-height: 22px;
+    cursor: pointer;
 }
 
-.navbar-icons {
-    width: 360px;
-    height: 22px;
+.nav-item span {
+    padding-left: 12px;
 }
 
-.profile-pic img {
+.nav-item img {
     height: 22px;
     width: 22px;
     border-radius: 50%;
 }
+.nav-item:active, .nav-item:hover{
+   font-weight: bold;
+   color: #000000;
+   background-color: #e6e6e6;
+   border-radius: 12px;
+}
+
  #auth-user {
-    margin: 0 0 60px 5px;
+    /* margin: 0 0 60px 5px; */
+    width: 100px;
     font-size: 13px;
-    font-weight: 500; 
+    /* font-weight: 500;  */
 }
 
 .logout {
     border: none;
     background-color: white;
-    margin-left: 20px;
+    margin-left: 80px;
     cursor: pointer;
 }
 .navbar-icons-inner {
@@ -108,23 +103,24 @@
 }
 
 main {
-    height: calc(100vh - 54px);
     background-color: #fafafa;
     display: flex;
     justify-content: center;
 }
 
 .content-container {
+   margin-left: 175px;
    padding-top: 30px;
    width: 935px;
    height: 100%;
    display: flex;
+   position: relative;
    overflow: hidden;
 }
 
 .content {
     margin: 0 28px 0 0;
-    width: 614px;
+    width: 650px;
     height: 100%;
     overflow-y: scroll;
  }
@@ -138,7 +134,6 @@ main {
     background-color: white;
     width: 100%;
     padding: 16px 0;
-    border: 1px solid var(--color-border);
     border-radius: 3px;
     height: 118px;
     overflow: hidden ;
@@ -188,9 +183,17 @@ main {
     font-weight: 400;
 }
 
+.posts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .post {
     display: flex;
     flex-direction: column;
+    width: 450px;
 }
 
 .header {
@@ -200,7 +203,6 @@ main {
     padding: 16px;
     background-color: white;
     width: 100%;
-    border: 1px solid var(--color-border);
     margin-top: 24px;
 }
 
@@ -227,7 +229,6 @@ main {
     background-color: white;
     width: 100%;
     padding: 16px;
-    border: 1px solid var(--color-border);
     border-bottom: none;
 }
 
@@ -268,7 +269,6 @@ main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border: 1px solid var(--color-border);
     padding: 0 16px;
 }
 
@@ -358,4 +358,5 @@ main {
 
 .body img {
     width: 100%;
+    border-radius: 8px;
 }
