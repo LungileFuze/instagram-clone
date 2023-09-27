@@ -42,8 +42,8 @@ class App {
   constructor() {
 
     this.posts = []
-    this.userId = ""
-    this.user = null
+    this.userId = null
+    this.user = ""
 
     //accessing authoration elements
     this.$app = document.querySelector("#app")
@@ -62,6 +62,11 @@ class App {
     //access index elements
     this.$posts = document.querySelector(".posts")
 
+    //modify post modal 
+    this.$modal = document.querySelector(".modify-post-container")
+    this.$moreOptions = document.querySelector(".options")
+    this.$cancelOption = document.querySelector(".cancel")
+
 
     this.ui = new firebaseui.auth.AuthUI(auth);
     this.handleAuth()
@@ -71,7 +76,6 @@ class App {
   handleAuth() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log(user.uid)
         this.userId = user.uid
         this.user = user
         this.$authUserText.innerHTML = user.displayName
@@ -105,6 +109,16 @@ class App {
     this.$app.style.display = "none"
 
     this.ui.start('#firebaseui-auth-container', {
+        callbacks: {
+            signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+              console.log(userId)
+              this.userId = authResult.user.uid
+              this.$authUserText.innerHTML = user.displayName
+              this.redirectToApp()
+              return true;
+            }
+        },
+
       signInOptions: [
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID
@@ -115,13 +129,14 @@ class App {
   
 
   addEventListeners() {
+    
       this.$logoutButton.addEventListener("click", (event) => {
         this.handleLogout()
       })
 
       this.$openForm.addEventListener("click", (event) => {
         event.preventDefault()
-        this.handleCreatePost()
+        this.openPostForm()
       })
       
       
@@ -175,6 +190,7 @@ class App {
 
           await postRef.update({
             posts: firebase.firestore.FieldValue.arrayUnion({
+              id:cuid(),
               userId: this.userId,
               caption: caption,
               imageURL: imageURL,
@@ -190,6 +206,14 @@ class App {
       this.clearPostInputs()
   })
 
+  this.$posts.addEventListener("click", (event) => {
+    this.openModalContainer(event)
+  })
+
+  this.$cancelOption.addEventListener("click", (event) => {
+    this.closeModalContainer(event)
+  })
+ 
   }
 
 
@@ -199,16 +223,41 @@ class App {
       this.imageInput.value = ""
   }
 
-  handleCreatePost() {
+  openPostForm() {
     if(this.$formContainer.style.display === "none" || this.formContainer === "") {
       this.$formContainer.style.display = "block"
     }else
       this.$formContainer.style.display = "none"
   }
 
+
+  openModalContainer(event) {
+    const isAuthenticated = firebase.auth().currentUser.uid;
+    const isUserPost = db.collection("posts").doc(this.userId).id
+
+    if(!isAuthenticated === isUserPost){
+        document.querySelectorAll(".text-danger").forEach(option => {
+          option.style.display = "none"
+          console.log(option)
+        });
+      } else {
+        document.querySelectorAll(".text-danger").forEach(option => {
+          option.style.display = "block"
+          console.log(option)
+        });
+      }
+      this.$modal.style.display = "block"
+    }
+  
+
+  closeModalContainer(event) {
+    this.$modal.style.display = "none"
+  }
+
   addPost({caption,imageURL}) {
     if(imageURL != "") {
         const newPost = {id:cuid(), caption, imageURL}
+        console.log(id)
         this.posts = [...this.posts, newPost]
         this.render()
     }
@@ -257,6 +306,7 @@ render() {
   this.savePosts()
   this.displayPosts()
 }
+
   displayPosts() {
     this.$posts.innerHTML = this.posts.map((post) => 
     `
