@@ -1,11 +1,20 @@
  // Your web app's Firebase configuration
- const firebaseConfig = {
-  apiKey: "AIzaSyBBRRaV2kkgoPnPDz2SKRrJr9XNoy4MNNQ",
-  authDomain: "instagram-clone-c9af4.firebaseapp.com",
-  projectId: "instagram-clone-c9af4",
-  storageBucket: "instagram-clone-c9af4.appspot.com",
-  messagingSenderId: "428034477451",
-  appId: "1:428034477451:web:f46788fcbc96c2b6efb38e"
+//  const firebaseConfig = {
+//   apiKey: "AIzaSyBBRRaV2kkgoPnPDz2SKRrJr9XNoy4MNNQ",
+//   authDomain: "instagram-clone-c9af4.firebaseapp.com",
+//   projectId: "instagram-clone-c9af4",
+//   storageBucket: "instagram-clone-c9af4.appspot.com",
+//   messagingSenderId: "428034477451",
+//   appId: "1:428034477451:web:f46788fcbc96c2b6efb38e"
+// };
+
+const firebaseConfig = {
+  apiKey: "AIzaSyASMZFUpC8_yhZNr76GdnqWatytXsUtI9o",
+  authDomain: "instagram-caa78.firebaseapp.com",
+  projectId: "instagram-caa78",
+  storageBucket: "instagram-caa78.appspot.com",
+  messagingSenderId: "137043517354",
+  appId: "1:137043517354:web:7232483972cba53b0095d3"
 };
 
 // Initialize Firebase
@@ -44,6 +53,7 @@ class App {
     this.posts = []
     this.userId = null
     this.user = ""
+    this.postId = ""
 
     //accessing authoration elements
     this.$app = document.querySelector("#app")
@@ -58,6 +68,7 @@ class App {
     this.$fileInput = document.querySelector("#file-input")
     this.$captionInput = document.querySelector("#caption")
     this.$uploadProgress = document.querySelector("#upload-progress")
+    this.$submitPostButton = document.querySelector(".submit-post")
 
     //access index elements
     this.$posts = document.querySelector(".posts")
@@ -66,6 +77,10 @@ class App {
     this.$modal = document.querySelector(".modify-post-container")
     this.$moreOptions = document.querySelector(".options")
     this.$cancelOption = document.querySelector(".cancel")
+    this.$editPost = document.querySelector("#edit-post")
+    this.$sharePostButton = document.querySelector("#submit-button")
+    this.$updateButton = document.querySelector("#update-button")
+    
 
 
     this.ui = new firebaseui.auth.AuthUI(auth);
@@ -136,9 +151,16 @@ class App {
 
       this.$openForm.addEventListener("click", (event) => {
         event.preventDefault()
+        event.stopPropagation()
         this.openPostForm()
+        this.$sharePostButton.style.display = "block"
+      this.$updateButton.style.display = "none"
       })
       
+      document.addEventListener("click", (event) => {
+          this.closePostForm(event)
+        
+      })
       
       this.$form.addEventListener("submit", async (event) => {
         event.preventDefault()
@@ -214,8 +236,36 @@ class App {
     this.closeModalContainer(event)
   })
  
+  this.$editPost.addEventListener("click", (event) => {
+     event.stopPropagation()
+      this.openPostForm(event)
+      this.openPostFormForUpdate(event)
+      console.log(this.fetchPostForEdit(event))
+      
+  })
   }
 
+  openPostFormForUpdate(event) {
+    this.$modal.style.display = "none"
+      this.$sharePostButton.style.display = "none"
+      this.$updateButton.style.display = "block"
+  }
+
+  //////////////////////////////////////Ended here
+
+  fetchPostForEdit() {
+    db.collection("posts").where("post.id", "==", "cln7svovi00003n6oyt0kc9bb")
+    .get()
+    .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+        });
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+  }
 
   clearPostInputs(){
       // Clear form inputs
@@ -223,13 +273,16 @@ class App {
       this.imageInput.value = ""
   }
 
-  openPostForm() {
-    if(this.$formContainer.style.display === "none" || this.formContainer === "") {
-      this.$formContainer.style.display = "block"
-    }else
-      this.$formContainer.style.display = "none"
+  openPostForm(event) {
+    this.$formContainer.style.display = "block"
   }
 
+  closePostForm(event) {
+    const isClickedInside = this.$formContainer.contains(event.target)
+    if (!isClickedInside ) {
+      this.$formContainer.style.display = "none"
+    } 
+  }
 
   openModalContainer(event) {
     const isAuthenticated = firebase.auth().currentUser.uid;
@@ -238,12 +291,10 @@ class App {
     if(!isAuthenticated === isUserPost){
         document.querySelectorAll(".text-danger").forEach(option => {
           option.style.display = "none"
-          console.log(option)
         });
       } else {
         document.querySelectorAll(".text-danger").forEach(option => {
           option.style.display = "block"
-          console.log(option)
         });
       }
       this.$modal.style.display = "block"
@@ -253,6 +304,7 @@ class App {
   closeModalContainer(event) {
     this.$modal.style.display = "none"
   }
+  
 
   addPost({caption,imageURL}) {
     if(imageURL != "") {
