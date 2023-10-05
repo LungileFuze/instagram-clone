@@ -151,7 +151,8 @@
                 <!-- <progress class="ml-5" value="0" max="100" id="progress">
                   
                 </progress> -->
-                <button class="btn btn-primary" type="submit">Upload</button>
+                <button class="btn btn-primary submit-post" id="submit-button" type="submit" style="display: block;">Share</button>
+                <button class="btn btn-primary" id="update-button" type="submit" style="display: none;">Done</button>
                </footer>
             
           </form>
@@ -161,8 +162,8 @@
           <div class="modify-post-modal">
               <div class="modal-content">
                   <ul class="list-group">
-                      <li class="list-group-item text-danger">Delete</li>
-                      <li class="list-group-item text-danger">Edit</li>
+                      <li class="list-group-item text-danger" id="delete-post">Delete</li>
+                      <li class="list-group-item text-danger" id="edit-post">Edit</li>
                       <li class="list-group-item" >Hide like count</li>
                       <li class="list-group-item">Turn off commenting</li>
                       <li class="list-group-item">Go to post</li>
@@ -293,7 +294,7 @@
               </div>
             </div>
             <div class="posts">
-              <div class="post">
+              <!-- <div class="post">
                 <div class="header">
                   <div class="profile-area">
                     <div class="post-pic">
@@ -444,7 +445,7 @@
                   <input type="text" placeholder="Add a comment..." />
                   <a class="post-btn">Post</a>
                 </div>
-              </div>
+              </div> -->
             </div> 
            
           </div>
